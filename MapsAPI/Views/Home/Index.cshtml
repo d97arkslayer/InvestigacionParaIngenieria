@@ -1,0 +1,56 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+<style>
+    /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+    #map {
+        height: 500px;
+        width: 700px
+    }
+    /* Optional: Makes the sample page fill the window. */
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+</style>
+<div class="row">
+    <br/>
+    <div id="map"></div>
+    <script>
+      var map;
+      function initMap() {
+          map = new google.maps.Map(document.getElementById('map'), {
+              center: { lat: 5.070275, lng: -75.513817 },
+              zoom: 8
+          });
+          var manizales = { lat: 5.070275, lng: -75.513817 };
+          var armenia = { lat: 4.535000, lng: -75.675689 };
+          var pereira = { lat: 4.808717, lng: -75.690601 };
+          //var map = new google.maps.Map(document.getElementById('map'), { zoom: 4, center: uluru });
+          var marker = new google.maps.Marker({ position: manizales, map: map });
+          var marker2 = new google.maps.Marker({ position: armenia, map: map });
+          var marker3 = new google.maps.Marker({ position: pereira, map: map });
+          //
+
+          var redCoords = [
+  manizales, armenia, pereira
+          ];
+          new google.maps.Polygon({
+              map: map,
+              paths: redCoords,
+              strokeColor: '#FF0000',
+              strokeOpacity: 0.8,
+              strokeWeight: 2,
+              fillColor: '#FF0000',
+              fillOpacity: 0.35,
+              //draggable: true,
+              geodesic: true
+          });
+      }
+    </script>
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC9tDF1pktvXYn9MNiuYH_Cjm4lzZorK3c&libraries=places"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC9tDF1pktvXYn9MNiuYH_Cjm4lzZorK3c&callback=initMap"
+            async defer></script>
+</div>
