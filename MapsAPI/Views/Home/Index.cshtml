@@ -33,6 +33,23 @@
         padding: 0;
         background-color: #343638;
     }
+
+    /*Menu*/
+
+    .content-all {
+        width: 100%;
+        max-width: 1000px;
+        margin: auto;
+        margin-top: 20px;
+    }
+
+    #check {
+        display:none;
+    }
+
+    .menu {
+        display: none;
+    }
 </style>
 
 <div class="row">
@@ -40,9 +57,21 @@
     <br />
     <div id="menu" class="col-lg-2">
 
-        <button class="btn btn-info">
-            Generar datos aleatorio
-        </button>
+        <div class="content-all">
+            <input type="checkbox" id="check"/>
+            <label for="check" class="icon-menu">Menú</label>
+
+            <nav class="menu">
+                <ul>
+                    <li> Generar datos aleatorios</li>
+                    <li> Resultados Historicos</li>
+                    <li> Mapa de riesgo </li>
+                    <li> Prevención </li>
+                    <li> Noticias </li>
+                </ul>
+            </nav>
+
+        </div>
     </div>
     <div id="map" class="col-lg-4"></div>
     <script>
