@@ -3,6 +3,7 @@ var resultados = {};
 var index = 0;
 document.getElementById("generate").addEventListener("click", generar);
 document.getElementById("historicos").addEventListener("click", historia);
+document.getElementById("riesgo").addEventListener("click", riesgo);
 
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
@@ -206,5 +207,54 @@ function historia() {
             center: { lat: longitud, lng: latitud },
             radius: magnitud * 10000 / 3
         });
+    }
+}
+
+function init2() {
+    map = new google.maps.Map(document.getElementById('map'), {
+        center: { lat: 5.070275, lng: -75.513817 },
+        zoom: 8
+    });
+}
+
+function riesgo() {
+    init2();
+    for (var i in resultados) {
+        let magnitud = resultados[i].magnitud;
+        let latitud = resultados[i].latitud;
+        let longitud = resultados[i].longitud
+        if (magnitud > 5) {
+            if (magnitud > 8) {
+                new google.maps.Marker({
+                    animation: google.maps.Animation.BOUNCE,
+                    label: Math.round(magnitud, -1) + "",
+                    position: { lat: longitud, lng: latitud },
+                    map: map
+                });
+            } else {
+                new google.maps.Marker({
+                    label: Math.round(magnitud, -1) + "",
+                    position: { lat: longitud, lng: latitud },
+                    map: map
+                });
+            }
+            var color = '#088A08';
+            if (magnitud > 4) {
+                color = '#FFFF00';
+            }
+            if (magnitud > 7) {
+                color = '#FF0000';
+            }
+            var cityCircle = new google.maps.Circle({
+                strokeColor: color,
+                strokeOpacity: 0.4,
+                strokeWeight: 1,
+                fillColor: color,
+                fillOpacity: 0.35,
+                map: map,
+                center: { lat: longitud, lng: latitud },
+                radius: magnitud * 10000 / 3
+            });
+        }
     }
 }
