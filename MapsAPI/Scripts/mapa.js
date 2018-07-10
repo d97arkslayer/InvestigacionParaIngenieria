@@ -1,4 +1,9 @@
 ﻿var map;
+var resultados = {};
+var index = 0;
+document.getElementById("generate").addEventListener("click", generar);
+document.getElementById("historicos").addEventListener("click", historia);
+
 function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
         center: { lat: 5.070275, lng: -75.513817 },
@@ -35,9 +40,9 @@ function initMap() {
     var calarca = { lat: 4.465486, lng: -75.592679 };
 
     //var map = new google.maps.Map(document.getElementById('map'), { zoom: 4, center: uluru });
-    var marker = new google.maps.Marker({ position: manizales, map: map });
-    var marker2 = new google.maps.Marker({ position: armenia, map: map });
-    var marker3 = new google.maps.Marker({ position: pereira, map: map });
+    /* var marker = new google.maps.Marker({ position: manizales, map: map });
+     var marker2 = new google.maps.Marker({ position: armenia, map: map });
+     var marker3 = new google.maps.Marker({ position: pereira, map: map });*/
     /*var marker4 = new google.maps.Marker({ position: nevado, map: map });
     var marker5 = new google.maps.Marker({ position: aguadas, map: map });
     var marker6 = new google.maps.Marker({ position: riosucio, map: map });
@@ -74,15 +79,15 @@ function initMap() {
     //
 
     var redCoords = [
-aguadas, riosucio, filadelfia, anserma, belalcazar,
-nevado, manzanares, laDorada, norcasia, pensilvania
+        aguadas, riosucio, filadelfia, anserma, belalcazar,
+        nevado, manzanares, laDorada, norcasia, pensilvania
     ];
     new google.maps.Polygon({
         map: map,
         paths: redCoords,
         strokeColor: '#7092BE',
-        strokeOpacity: 0.8,
-        strokeWeight: 2,
+        strokeOpacity: 0.9,
+        strokeWeight: 3,
         fillColor: '#7092BE',
         fillOpacity: 0.35,
         //draggable: true,
@@ -91,14 +96,14 @@ nevado, manzanares, laDorada, norcasia, pensilvania
 
 
     var redCoords = [
-santaRosa, america, cartago, puebloRico, mistrato, quinchia, santuario
+        santaRosa, america, cartago, puebloRico, mistrato, quinchia, santuario
     ];
     new google.maps.Polygon({
         map: map,
         paths: redCoords,
         strokeColor: '#804040',
-        strokeOpacity: 0.8,
-        strokeWeight: 2,
+        strokeOpacity: 0.9,
+        strokeWeight: 3,
         fillColor: '#804040',
         fillOpacity: 0.35,
         //draggable: true,
@@ -107,17 +112,99 @@ santaRosa, america, cartago, puebloRico, mistrato, quinchia, santuario
 
 
     var redCoords = [
-salento, filandia, quimbaya, laTebaida, alpes, genova, pijao, calarca
+        salento, filandia, quimbaya, laTebaida, alpes, genova, pijao, calarca
     ];
     new google.maps.Polygon({
         map: map,
         paths: redCoords,
         strokeColor: '#004000',
-        strokeOpacity: 0.8,
-        strokeWeight: 2,
+        strokeOpacity: 0.9,
+        strokeWeight: 3,
         fillColor: '#004000',
         fillOpacity: 0.35,
         //draggable: true,
         geodesic: true
     });
+}
+
+function generar() {
+    initMap();
+    let latitud = Math.random() * (-74.618270 - (-76.134008)) + (-76.134008);
+    let longitud = Math.random() * (5.786126 - 4.070182) + 4.070182;
+    let magnitud = Math.random() * (10 - 1) + 1;
+    resultados[index] = { latitud: latitud, longitud: longitud, magnitud: magnitud };
+    index++;
+    if (magnitud > 8) {
+        new google.maps.Marker({
+            animation: google.maps.Animation.BOUNCE,
+            label: Math.round(magnitud, -1) + "",
+            position: { lat: longitud, lng: latitud },
+            map: map
+        });
+    } else {
+        new google.maps.Marker({
+            label: Math.round(magnitud, -1) + "",
+            position: { lat: longitud, lng: latitud },
+            map: map
+        });
+    }
+    var color = '#088A08';
+    if (magnitud > 4) {
+        color = '#FFFF00';
+    }
+    if (magnitud > 7) {
+        color = '#FF0000';
+    }
+    var cityCircle = new google.maps.Circle({
+        strokeColor: color,
+        strokeOpacity: 0.4,
+        strokeWeight: 1,
+        fillColor: color,
+        fillOpacity: 0.35,
+        map: map,
+        center: { lat: longitud, lng: latitud },
+        radius: magnitud * 10000 / 3
+    });
+
+    console.log(longitud + " " + latitud + " " + magnitud);
+}
+
+function historia() {
+    initMap();
+    for (var i in resultados) {
+        let magnitud = resultados[i].magnitud;
+        let latitud = resultados[i].latitud;
+        let longitud = resultados[i].longitud
+        if (magnitud > 8) {
+            new google.maps.Marker({
+                animation: google.maps.Animation.BOUNCE,
+                label: Math.round(magnitud, -1) + "",
+                position: { lat: longitud, lng: latitud },
+                map: map
+            });
+        } else {
+            new google.maps.Marker({
+                label: Math.round(magnitud, -1) + "",
+                position: { lat: longitud, lng: latitud },
+                map: map
+            });
+        }
+        var color = '#088A08';
+        if (magnitud > 4) {
+            color = '#FFFF00';
+        }
+        if (magnitud > 7) {
+            color = '#FF0000';
+        }
+        var cityCircle = new google.maps.Circle({
+            strokeColor: color,
+            strokeOpacity: 0.4,
+            strokeWeight: 1,
+            fillColor: color,
+            fillOpacity: 0.35,
+            map: map,
+            center: { lat: longitud, lng: latitud },
+            radius: magnitud * 10000 / 3
+        });
+    }
 }
